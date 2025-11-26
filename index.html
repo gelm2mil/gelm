@@ -1,6 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
+<!-- ======================= 🔒 PROTECCIÓN TOTAL ANTI-ROBO 🔒 ======================= -->
+<script>
+// Bloquear clic derecho
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+// Bloquear teclas de inspección
+document.addEventListener("keydown", function(e){
+    if(
+        e.keyCode === 123 ||                               // F12
+        (e.ctrlKey && e.shiftKey && e.keyCode===73) ||     // Ctrl+Shift+I
+        (e.ctrlKey && e.shiftKey && e.keyCode===74) ||     // Ctrl+Shift+J
+        (e.ctrlKey && e.shiftKey && e.keyCode===67) ||     // Ctrl+Shift+C
+        (e.ctrlKey && e.keyCode===85) ||                   // Ctrl+U
+        (e.ctrlKey && e.keyCode===83)                      // Ctrl+S
+    ){
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+});
+
+// Bloquear selección / copiar
+["copy","cut","paste","selectstart"].forEach(ev=>{
+    document.addEventListener(ev, e => e.preventDefault());
+});
+
+// Anti-DevTools detección
+setInterval(() => {
+    if (window.outerWidth - window.innerWidth > 150 ||
+        window.outerHeight - window.innerHeight > 200){
+        document.body.innerHTML =
+        "<h1 style='color:#ff0044;text-align:center;margin-top:40px;font-family:Arial'>⚠ SISTEMA PROTEGIDO — GELM</h1>";
+    }
+}, 500);
+</script>
+<!-- ============================================================================== -->
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PMT - GELM | Mototaxis 2025</title>
@@ -21,6 +59,7 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <div class="contenedor">
     <div class="header-top">
@@ -32,7 +71,7 @@
         <div class="titulos-linea1">POLICÍA MUNICIPAL DE TRÁNSITO - CHIMALTENANGO</div>
         <div class="titulos-linea2">DELEGACIÓN DE TRANSPORTES</div>
         <div class="titulos-linea3">Sistema de Consulta 2014 - 2025 — == BY GELM == —</div>
-        <div class="titulos-linea4">Buscador de vehiculos Autorizadas mediante la municipalidad 2025</div>
+        <div class="titulos-linea4">Buscador de Mototaxis Autorizadas 2025</div>
       </div>
 
       <div class="logo-box">
