@@ -1,224 +1,126 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema PMT 2026 — GELM</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agenda 2026 — GELM</title>
 
-  <!-- Manifest y PWA (opcional si ya los usas) -->
-  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
 
-  <!-- Fuente y estilos base -->
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+  <!-- Librería para Excel -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-    body {
-      min-height: 100vh;
-      background: radial-gradient(circle at 30% 10%, #00eaff33, #000012 60%, #450045 120%);
-      font-family: Arial, sans-serif;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .wrapper {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 10px 40px;
-    }
-
-    .hero {
-      width: 100%;
-      max-width: 1100px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .logo-box {
-      width: 100%;
-      max-width: 700px;
-      margin: 0 auto 40px;
-    }
-
-    .logo-box img {
-      width: 100%;
-      display: block;
-      filter: drop-shadow(0 0 25px #00eaff);
-    }
-
-    .texto-sistema {
-      margin-top: 10px;
-      padding: 15px 20px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 18px;
-      box-shadow: 0 0 25px #00ffc8;
-    }
-
-    .texto-sistema h1 {
-      font-size: 28px;
-      margin-bottom: 6px;
-      color: #00ffc8;
-      text-shadow: 0 0 14px #00ffc8;
-    }
-
-    .texto-sistema h2 {
-      font-size: 16px;
-      margin-bottom: 6px;
-      font-weight: normal;
-    }
-
-    .texto-sistema p {
-      font-size: 14px;
-      color: #baffff;
-    }
-
-    .by-gelm {
-      margin-top: 15px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #00ffc8;
-    }
-
-    .menu {
-      margin-top: 10px;
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .menu li {
-      margin-bottom: 6px;
-    }
-
-    .menu a {
-      display: inline-block;
-      text-decoration: none;
-      padding: 6px 10px;
-      border-radius: 10px;
-      background: rgba(0, 0, 0, 0.65);
-      color: #ffffff;
-      font-size: 14px;
-      box-shadow: 0 0 12px #00ffc8;
-      border: 1px solid #00ffc8;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    }
-
-    .menu a span.icono {
-      margin-right: 8px;
-    }
-
-    .menu a:hover {
-      transform: translateX(4px);
-      box-shadow: 0 0 18px #8c00ff;
-      background: linear-gradient(90deg, #0099ff55, #8c00ff55);
-    }
-
-    footer {
-      text-align: center;
-      font-size: 12px;
-      padding: 10px 0 18px;
-      color: #00ffc8;
-      text-shadow: 0 0 8px #00ffc8;
-    }
-
-    footer a {
-      color: #00eaff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 768px) {
-      .texto-sistema h1 {
-        font-size: 22px;
-      }
-
-      .logo-box {
-        margin-bottom: 25px;
-      }
-    }
-  </style>
+  <script defer src="app.js"></script>
 </head>
 <body>
 
-<div class="wrapper">
+<div class="contenedor">
 
-  <!-- Logo gigante GELM (ajusta la ruta si tu imagen está en otro lugar) -->
-  <div class="hero">
-    <div class="logo-box">
-      <!-- Si tienes el logo en ../assets/gelm.png, esta ruta está bien -->
-      <img src="../assets/gelm.png" alt="GELM" onerror="this.style.display='none'">
+  <!-- ENCABEZADO -->
+  <div class="header-top">
+    <img src="../assets/gelm.png" class="logo" alt="GELM">
+    <div class="titulos">
+      <h1>AGENDA 2026 — PMT CHIMALTENANGO</h1>
+      <p>Sistema profesional de programación mensual</p>
     </div>
-
-    <div class="texto-sistema">
-      <h1>SISTEMA PMT 2026</h1>
-      <h2>Unidad de Transportes — PMT Chimaltenango</h2>
-      <p>Plataforma de control, programación y seguimiento de actividades operativas y administrativas.</p>
-
-      <div class="by-gelm">
-        == BY GELM ==
-      </div>
-
-      <ul class="menu">
-        <li>
-          <a href="agen2026.html">
-            <span class="icono">📅</span>Agenda 2026
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span class="icono">🚧</span>Operativos Próximamente
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span class="icono">🧨</span>Denuncias En desarrollo
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span class="icono">🔍</span>Buscar placas / DPI
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span class="icono">💾</span>Respaldos
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span class="icono">📊</span>Reportes
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span class="icono">⚙️</span>Configuración
-          </a>
-        </li>
-      </ul>
-    </div>
+    <img src="../assets/gelm.png" class="logo" alt="GELM">
   </div>
+
+  <!-- BOTÓN VOLVER -->
+  <button class="btn-volver" onclick="location.href='../index.html'">
+    ⬅ Volver al menú
+  </button>
+
+  <h2 class="subtitulo">Agregar actividad</h2>
+
+  <!-- FORMULARIO -->
+  <div class="formulario">
+
+    <label>Fecha</label>
+    <input type="date" id="fecha">
+
+    <label>Categoría</label>
+    <select id="categoria">
+      <option value="Operativo">Operativo</option>
+      <option value="Administrativo">Administrativo</option>
+      <option value="Denuncia">Denuncia</option>
+      <option value="Seguimiento a denuncia">Seguimiento a denuncia</option>
+      <option value="Otros">Otros</option>
+    </select>
+
+    <label>Servicio</label>
+    <select id="servicio">
+      <option value="-(Opcional)-">-(Opcional)-</option>
+      <option>Urbano</option>
+      <option>Extraurbano</option>
+      <option>Moto taxi</option>
+      <option>Escolar</option>
+      <option>Fletes</option>
+      <option>Automóvil</option>
+      <option>Motocicleta</option>
+      <option>Otros</option>
+    </select>
+
+    <label>Lugar / ruta</label>
+    <input type="text" id="lugar" placeholder="Interamericana, casco urbano, colonias…">
+
+    <label>Detalle</label>
+    <textarea id="detalle" placeholder="Objetivo, seguimiento, operativo, etc."></textarea>
+
+    <button id="btnAgregar" class="btn-accion">Agregar a la agenda</button>
+
+  </div>
+
+  <!-- FILTRO -->
+  <div class="filtros">
+    <label>Ver mes:</label>
+    <select id="verMes">
+      <option value="0">Todos</option>
+      <option value="1">Enero</option>
+      <option value="2">Febrero</option>
+      <option value="3">Marzo</option>
+      <option value="4">Abril</option>
+      <option value="5">Mayo</option>
+      <option value="6">Junio</option>
+      <option value="7">Julio</option>
+      <option value="8">Agosto</option>
+      <option value="9">Septiembre</option>
+      <option value="10">Octubre</option>
+      <option value="11">Noviembre</option>
+      <option value="12">Diciembre</option>
+    </select>
+
+    <button id="btnExcel" class="btn-excel">Descargar Excel</button>
+    <button id="btnBorrar" class="btn-peligro">Borrar todo</button>
+  </div>
+
+  <!-- TABLA -->
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Categoría</th>
+        <th>Servicio</th>
+        <th>Lugar</th>
+        <th>Detalle</th>
+      </tr>
+    </thead>
+    <tbody id="lista"></tbody>
+  </table>
 
 </div>
 
-<footer>
+<footer class="pie">
   © 2026 — GELM | Unidad de Transportes PMT
+  <br>
+  <span id="fechaActual"></span>
 </footer>
 
 <script>
-  // Registro simple del service worker si existe (opcional)
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js").catch(() => {});
-  }
+  document.getElementById("fechaActual").textContent =
+    new Date().toLocaleDateString("es-GT", {
+      day:"2-digit", month:"long", year:"numeric"
+    });
 </script>
 
 </body>
