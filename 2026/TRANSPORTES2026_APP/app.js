@@ -153,7 +153,8 @@ function normalizarTexto(t) {
   return String(t).toUpperCase().replace(/\s+/g, '').replace(/-/g, '');
 }
 
-fetch('placas.json')
+fetch('fetch("placas.json?v=" + Date.now())
+')
   .then(r => r.json())
   .then(data => {
     placasData = Array.isArray(data) ? data : [];
