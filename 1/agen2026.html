@@ -1,86 +1,134 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#00eaff">
+
+<!-- ======================= 🔒 PROTECCIÓN TOTAL ANTI-ROBO 🔒 ======================= -->
 <script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-  }
+// Bloquear clic derecho
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+// Bloquear teclas de inspección
+document.addEventListener("keydown", function(e){
+    if(
+        e.keyCode === 123 ||                               // F12
+        (e.ctrlKey && e.shiftKey && e.keyCode===73) ||     // Ctrl+Shift+I
+        (e.ctrlKey && e.shiftKey && e.keyCode===74) ||     // Ctrl+Shift+J
+        (e.ctrlKey && e.shiftKey && e.keyCode===67) ||     // Ctrl+Shift+C
+        (e.ctrlKey && e.keyCode===85) ||                   // Ctrl+U
+        (e.ctrlKey && e.keyCode===83)                      // Ctrl+S
+    ){
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+});
+
+// Bloquear selección / copiar
+["copy","cut","paste","selectstart"].forEach(ev=>{
+    document.addEventListener(ev, e => e.preventDefault());
+});
+
+// Anti-DevTools detección
+setInterval(() => {
+    if (window.outerWidth - window.innerWidth > 150 ||
+        window.outerHeight - window.innerHeight > 200){
+        document.body.innerHTML =
+        "<h1 style='color:#ff0044;text-align:center;margin-top:40px;font-family:Arial'>⚠ SISTEMA PROTEGIDO — GELM</h1>";
+    }
+}, 500);
 </script>
+<!-- ============================================================================== -->
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GELM — Sistema PMT 2026</title>
-<link rel="stylesheet" href="menu.css">
+<title>PMT - GELM | transportes 2025</title>
+
+<!-- Colores PWA -->
+<meta name="theme-color" content="#00ffc8">
+
+<!-- Manifest PWA -->
+<link rel="manifest" href="./manifest.webmanifest">
+
+<!-- Iconos -->
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+
+<!-- Librería XLSX (para leer 2025.xlsx) -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<!-- Estilos -->
+<link rel="stylesheet" href="./styles.css">
+
 </head>
 
 <body>
+<div class="contenedor">
+    <div class="header-top">
+        <div class="logo-box">
+            <img src="https://gelmhistoria.webcindario.com/pmt.jpg" alt="Logo PMT">
+        </div>
 
-<div class="container">
+        <div class="titulos">
+            <div class="titulos-linea1">POLICÍA MUNICIPAL DE TRÁNSITO - CHIMALTENANGO</div>
+            <div class="titulos-linea2">DELEGACIÓN DE TRANSPORTES</div>
+            <div class="titulos-linea3">Sistema de Consulta 2014 - 2025 — == BY GELM == —</div>
+            <div class="titulos-linea4">Buscador de vehiculos Autorizadas 2025</div>
+        </div>
 
-  <header class="top-header">
-      <img src="icons/gelm.png" class="logo">
-      <h1 class="titulo">SISTEMA PMT 2026</h1>
-      <h2 class="sub">Unidad de Transportes — PMT Chimaltenango</h2>
-      <h3 class="by">== BY GELM ==</h3>
-  </header>
-
-  <div class="grid-menu">
-
-    <!-- AGENDA -->
-    <div class="card" onclick="location.href='agen2026.html'">
-      <span class="icon">📘</span>
-      <span class="label">Agenda 2026</span>
+        <div class="logo-box">
+            <img src="https://gelmhistoria.webcindario.com/PMT/gelm.png" alt="Logo GELM">
+        </div>
     </div>
 
-    <!-- OPERATIVOS -->
-    <div class="card disabled">
-      <span class="icon">🚨</span>
-      <span class="label">Operativos</span>
-      <span class="mini">Próximamente</span>
+    <div id="estado">Cargando archivo Excel...</div>
+
+    <div class="buscador">
+        <input id="busquedaInput" type="text"
+        placeholder="Placa, DPI, No. licencia, documento o No. calcomanía...">
+        <button id="btnBuscar">Buscar</button>
     </div>
 
-    <!-- DENUNCIAS -->
-    <div class="card disabled">
-      <span class="icon">📝</span>
-      <span class="label">Denuncias</span>
-      <span class="mini">En desarrollo</span>
+    <p class="nota">
+      Puedes escribir con o sin espacios / guiones. Ej:<br>
+      <b>1856 12258 0413</b> ó <b>1856122580413</b> &nbsp; | &nbsp;
+      <b>1056-12250413</b> ó <b>105612250413</b> &nbsp; | &nbsp;
+      <b>40</b> (No. calcomanía mototaxi)
+    </p>
+
+    <div id="resultado"></div>
+
+    <div id="similaresBox" class="similares-box oculto">
+      <span class="similares-label">SIMILARES:</span>
+      <select id="similaresSelect">
+        <option value="">-- seleccionar --</option>
+      </select>
     </div>
 
-    <!-- BUSCADOR DE PLACAS -->
-    <div class="card" onclick="location.href='https://gelm2mil.github.io/gelm/'">
-      <span class="icon">🔎</span>
-      <span class="label">Buscar placas / DPI</span>
+    <div class="contacto-wrapper">
+      <button class="btn-contacto" onclick="window.location.href='mailto:nerox2mil@proton.me'">
+        <span class="icono">🛰️</span>
+        <span>Más información / Contactar a GELM</span>
+      </button>
     </div>
-
-    <!-- RESPALDOS -->
-    <div class="card disabled">
-      <span class="icon">📦</span>
-      <span class="label">Respaldos</span>
-    </div>
-
-    <!-- REPORTES -->
-    <div class="card disabled">
-      <span class="icon">📊</span>
-      <span class="label">Reportes</span>
-    </div>
-
-    <!-- CONFIGURACIÓN -->
-    <div class="card disabled">
-      <span class="icon">⚙</span>
-      <span class="label">Configuración</span>
-    </div>
-
-  </div>
-
-  <footer class="pie">
-    <div>© 2026 — GELM</div>
-    <div>PMT — Chimaltenango</div>
-  </footer>
-
 </div>
+
+<footer class="pie">
+    <div id="pie-linea1">2014 - 2025 | BY GELM | Delegación de Transportes PMT - Chimaltenango</div>
+    <div id="pie-linea2">att: ---[GELM]---</div>
+    <div id="pie-fecha"></div>
+</footer>
+
+<!--  RUTA REPARADA  ✔ -->
+<script src="./app.js"></script>
+
+<script>
+    document.getElementById("pie-fecha").textContent =
+      new Date().toLocaleDateString("es-GT",{day:"2-digit",month:"long",year:"numeric"});
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js');
+    }
+</script>
 
 </body>
 </html>
-
