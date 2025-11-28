@@ -1,0 +1,23 @@
+{
+  "name": "Transportes 2026",
+  "short_name": "Transportes 2026",
+  "description": "Sistema de agenda, operativos, denuncias y control de servicios de transportes — BY GELM",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#05010a",
+  "theme_color": "#00ffc8",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "gelm.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "gelm.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

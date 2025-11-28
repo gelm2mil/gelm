@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transportes 2026 | GELM</title>
+  <meta name="theme-color" content="#00ffc8">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="gelm.png">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js').catch(err => {
+          console.log('SW error', err);
+        });
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="contenedor">
+    <div class="header-top">
+      <div class="logo-box">
+        <img src="gelm.png" alt="GELM Logo">
+      </div>
+      <div class="titulos">
+        <div class="titulos-linea1">TRANSPORTES 2026 — PMT CHIMALTENANGO</div>
+        <div class="titulos-linea2">Unidad de Transportes — Subcomisario / Jefe de Transportes</div>
+        <div class="titulos-linea3">Sistema de agenda, operativos, denuncias y control de servicios</div>
+        <div class="titulos-linea4">== BY GELM ==</div>
+      </div>
+      <div class="logo-box">
+        <img src="gelm.png" alt="GELM Logo">
+      </div>
+    </div>
+
+    <div class="nav-tabs">
+      <button data-vista="agenda" class="active">Agenda 2026</button>
+      <button data-vista="operativos">Operativos</button>
+      <button data-vista="denuncias">Denuncias</button>
+      <button data-vista="buscador">Buscador placas / licencias</button>
+      <button data-vista="respaldos">Respaldos</button>
+    </div>
+
+    <!-- VISTA AGENDA -->
+    <div id="vista-agenda" class="vista activa">
+      <h3>Agenda mensual 2026</h3>
+      <div class="form-grid">
+        <div>
+          <label for="agendaFecha">Fecha</label>
+          <input type="date" id="agendaFecha" min="2026-01-01" max="2026-12-31">
+        </div>
+        <div>
+          <label for="agendaCategoria">Categoría</label>
+          <select id="agendaCategoria">
+            <option value="OPERATIVO">Operativo</option>
+            <option value="REVISION_ANUAL">Revisión anual</option>
+            <option value="CALCOMANIA">Entrega de calcomanía</option>
+            <option value="CAMBIO_VEHICULO">Cambio de vehículo</option>
+            <option value="TRASPASO">Traspaso</option>
+            <option value="CONSIGNACION">Consignación</option>
+            <option value="PAGO">Pago de concesionario</option>
+            <option value="DENUNCIA">Seguimiento a denuncia</option>
+            <option value="COORDINACION">Coordinación PNC / DGT / Juzgado</option>
+            <option value="OTRO">Otro</option>
+          </select>
+        </div>
+        <div>
+          <label for="agendaServicio">Servicio</label>
+          <select id="agendaServicio">
+            <option value="">(Opcional)</option>
+            <option value="URBANO">Urbano</option>
+            <option value="EXTRAURBANO">Extraurbano</option>
+            <option value="MOTOTAXI">Moto taxi</option>
+            <option value="FLETES">Fletes</option>
+            <option value="BASURA">Recolectores de basura</option>
+            <option value="ESCOLAR">Escolar</option>
+          </select>
+        </div>
+        <div>
+          <label for="agendaLugar">Lugar / ruta</label>
+          <input type="text" id="agendaLugar" placeholder="Casco urbano, Interamericana, colonia, etc.">
+        </div>
+        <div>
+          <label for="agendaDetalle">Detalle de la actividad</label>
+          <textarea id="agendaDetalle" placeholder="Objetivo del operativo, revisión, seguimiento, etc."></textarea>
+        </div>
+      </div>
+      <button id="btnAgregarAgenda" class="btn-primary">Agregar a la agenda</button>
+
+      <div class="form-grid" style="margin-top:14px;">
+        <div>
+          <label for="agendaMesFiltro">Ver mes</label>
+          <select id="agendaMesFiltro">
+            <option value="0">Enero</option>
+            <option value="1">Febrero</option>
+            <option value="2">Marzo</option>
+            <option value="3">Abril</option>
+            <option value="4">Mayo</option>
+            <option value="5">Junio</option>
+            <option value="6">Julio</option>
+            <option value="7">Agosto</option>
+            <option value="8">Septiembre</option>
+            <option value="9">Octubre</option>
+            <option value="10">Noviembre</option>
+            <option value="11">Diciembre</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="tablaAgenda">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Categoría</th>
+              <th>Servicio</th>
+              <th>Lugar / ruta</th>
+              <th>Detalle</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VISTA OPERATIVOS -->
+    <div id="vista-operativos" class="vista">
+      <h3>Registro de operativos</h3>
+      <p style="font-size:13px;color:#a5ffe5;">
+        Esta vista muestra únicamente los eventos de agenda marcados como <b>Operativo</b>,
+        para ayudarte a elaborar tu informe semanal o mensual.
+      </p>
+      <div class="table-wrap">
+        <table id="tablaOperativos">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Servicio</th>
+              <th>Lugar / ruta</th>
+              <th>Detalle</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VISTA DENUNCIAS -->
+    <div id="vista-denuncias" class="vista">
+      <h3>Seguimiento a denuncias</h3>
+      <p style="font-size:13px;color:#a5ffe5;">
+        Aquí se filtran los eventos de agenda marcados como <b>Denuncia</b> o seguimiento a la misma.
+      </p>
+      <div class="table-wrap">
+        <table id="tablaDenuncias">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Servicio</th>
+              <th>Lugar / ruta</th>
+              <th>Detalle</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VISTA BUSCADOR PLACAS -->
+    <div id="vista-buscador" class="vista">
+      <h3>Buscador de placas / licencias / DPI</h3>
+      <div id="estado">Cargando archivo de placas...</div>
+      <div class="buscador">
+        <input id="busquedaInput" type="text"
+          placeholder="Placa, DPI, No. licencia, documento o cualquier dato relacionado...">
+        <button id="btnBuscar">Buscar</button>
+      </div>
+      <p class="nota">
+        Puedes escribir con o sin espacios / guiones. Ej:<br>
+        <b>1856 12258 0413</b> ó <b>1856122580413</b> &nbsp; | &nbsp;
+        <b>1056-12250413</b> ó <b>105612250413</b> &nbsp; | &nbsp;
+        <b>ABC123</b> (placa) o datos del propietario.
+      </p>
+      <div id="resultado"></div>
+    </div>
+
+    <!-- VISTA RESPALDOS -->
+    <div id="vista-respaldos" class="vista">
+      <h3>Respaldos del sistema</h3>
+      <p class="respaldos-info">
+        Desde aquí puedes descargar un archivo de respaldo (.json) con toda la información
+        de tu agenda 2026. Este archivo lo puedes adjuntar a tus informes semanales,
+        guardarlo en tu computadora o subirlo a un USB para mayor seguridad.
+      </p>
+      <button id="btnDescargarRespaldo" class="btn-primary">Descargar respaldo completo (.json)</button>
+    </div>
+  </div>
+
+  <footer class="pie">
+    <div id="pie-linea1">2026 | BY GELM | Unidad de Transportes PMT - Chimaltenango</div>
+    <div id="pie-linea2">att: ---[GELM]---</div>
+    <div id="pie-fecha"></div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
