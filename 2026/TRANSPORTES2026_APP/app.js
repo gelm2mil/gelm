@@ -1,266 +1,197 @@
-// ====== Estado en memoria y almacenamiento local ======
-const STORAGE_KEY = 'transportes2026_data';
+// === AGENDA 2026 - UNIDAD DE TRANSPORTES PMT (BY GELM) ===================
 
-let state = {
-  agenda: [],   // {id, fecha, categoria, servicio, lugar, detalle}
-};
+const LS_KEY = 'agenda2026';
 
-function cargarEstado() {
+const fechaInput    = document.getElementById('fecha');
+const categoriaSel  = document.getElementById('categoria');
+const servicioSel   = document.getElementById('servicio');
+const lugarInput    = document.getElementById('lugar');
+const detalleInput  = document.getElementById('detalle');
+
+const btnAgregar    = document.getElementById('btnAgregar');
+const btnExcel      = document.getElementById('btnExcel');
+const btnBorrarTodo = document.getElementById('btnBorrarTodo');
+
+const verMesSel     = document.getElementById('verMes');
+const estadoLbl     = document.getElementById('estado');
+const tablaBody     = document.querySelector('#tablaAgenda tbody');
+
+let agenda = [];
+
+// Cargar desde localStorage
+function cargarAgenda() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (parsed && Array.isArray(parsed.agenda)) {
-        state.agenda = parsed.agenda;
-      }
-    }
-  } catch(e) {
-    console.error('Error al cargar estado', e);
+    const raw = localStorage.getItem(LS_KEY);
+    agenda = raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    agenda = [];
   }
 }
 
-function guardarEstado() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch(e) {
-    console.error('Error al guardar estado', e);
-  }
+// Guardar en localStorage
+function guardarAgenda() {
+  localStorage.setItem(LS_KEY, JSON.stringify(agenda));
 }
 
-// Util para generar IDs simples
-function generarId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2);
+// Formatear fecha a dd/mm/yyyy
+function formatearFechaDisplay(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  if (isNaN(d)) return '';
+  const dia  = String(d.getDate()).padStart(2,'0');
+  const mes  = String(d.getMonth()+1).padStart(2,'0');
+  const anio = d.getFullYear();
+  return `${dia}/${mes}/${anio}`;
 }
 
-// ====== Navegación de vistas ======
-const tabButtons = document.querySelectorAll('.nav-tabs button');
-const vistas = {
-  agenda: document.getElementById('vista-agenda'),
-  operativos: document.getElementById('vista-operativos'),
-  denuncias: document.getElementById('vista-denuncias'),
-  buscador: document.getElementById('vista-buscador'),
-  respaldos: document.getElementById('vista-respaldos')
-};
+// Obtener mes (1-12) desde fecha ISO
+function obtenerMes(iso) {
+  const d = new Date(iso + 'T00:00:00');
+  return isNaN(d) ? 0 : d.getMonth() + 1;
+}
 
-tabButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    tabButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const vista = btn.getAttribute('data-vista');
-    Object.keys(vistas).forEach(k => {
-      vistas[k].classList.toggle('activa', k === vista);
-    });
+// Renderizar tabla según mes seleccionado
+function renderAgenda() {
+  const mesFiltro = parseInt(verMesSel.value || '0', 10);
+
+  // Ordenar por fecha ascendente
+  agenda.sort((a,b) => (a.fecha || '').localeCompare(b.fecha || ''));
+
+  tablaBody.innerHTML = '';
+
+  let contMostrados = 0;
+
+  agenda.forEach(reg => {
+    if (mesFiltro !== 0 && reg.mes !== mesFiltro) return;
+
+    const tr = document.createElement('tr');
+
+    const tdFecha = document.createElement('td');
+    tdFecha.textContent = reg.fechaDisplay || '';
+    tr.appendChild(tdFecha);
+
+    const tdCat = document.createElement('td');
+    tdCat.textContent = reg.categoria || '';
+    tr.appendChild(tdCat);
+
+    const tdServ = document.createElement('td');
+    tdServ.textContent = reg.servicio || '';
+    tr.appendChild(tdServ);
+
+    const tdLugar = document.createElement('td');
+    tdLugar.textContent = reg.lugar || '';
+    tr.appendChild(tdLugar);
+
+    const tdDet = document.createElement('td');
+    tdDet.textContent = reg.detalle || '';
+    tr.appendChild(tdDet);
+
+    tablaBody.appendChild(tr);
+    contMostrados++;
   });
-});
 
-// ====== Agenda 2026 ======
-const inputFecha = document.getElementById('agendaFecha');
-const inputCategoria = document.getElementById('agendaCategoria');
-const inputServicio = document.getElementById('agendaServicio');
-const inputLugar = document.getElementById('agendaLugar');
-const inputDetalle = document.getElementById('agendaDetalle');
-const btnAgregarAgenda = document.getElementById('btnAgregarAgenda');
-const selectMesFiltro = document.getElementById('agendaMesFiltro');
-const tablaAgendaBody = document.querySelector('#tablaAgenda tbody');
-const tablaOperativosBody = document.querySelector('#tablaOperativos tbody');
-const tablaDenunciasBody = document.querySelector('#tablaDenuncias tbody');
+  const total = agenda.length;
+  const mesTexto = mesFiltro === 0
+    ? 'todos los meses'
+    : verMesSel.options[verMesSel.selectedIndex].textContent;
 
-btnAgregarAgenda.addEventListener('click', () => {
-  const fecha = inputFecha.value;
-  const categoria = inputCategoria.value;
-  const servicio = inputServicio.value;
-  const lugar = inputLugar.value.trim();
-  const detalle = inputDetalle.value.trim();
+  estadoLbl.textContent = `Mostrando ${contMostrados} de ${total} actividades para ${mesTexto}.`;
+}
 
-  if (!fecha || !categoria || !detalle) {
-    alert('Por favor ingresa al menos la fecha, categoría y detalle.');
+// Agregar registro
+function agregarRegistro() {
+  const fecha = fechaInput.value.trim();
+  const categoria = categoriaSel.value.trim();
+  const servicio  = servicioSel.value.trim();
+  const lugar     = lugarInput.value.trim();
+  const detalle   = detalleInput.value.trim();
+
+  if (!fecha) {
+    alert('Ingresa una fecha para la actividad.');
+    fechaInput.focus();
     return;
   }
+  if (!categoria) {
+    alert('Selecciona una categoría.');
+    categoriaSel.focus();
+    return;
+  }
+  if (!detalle) {
+    if (!confirm('El detalle está vacío. ¿Agregar de todos modos?')) return;
+  }
 
-  state.agenda.push({
-    id: generarId(),
+  const nuevo = {
+    id: Date.now(),
     fecha,
+    fechaDisplay: formatearFechaDisplay(fecha),
+    mes: obtenerMes(fecha),
     categoria,
     servicio,
     lugar,
     detalle
-  });
-
-  guardarEstado();
-  inputDetalle.value = '';
-  renderAgenda();
-  alert('Actividad agregada a la agenda.');
-});
-
-selectMesFiltro.addEventListener('change', renderAgenda);
-
-function renderAgenda() {
-  const mes = parseInt(selectMesFiltro.value, 10);
-  tablaAgendaBody.innerHTML = '';
-  tablaOperativosBody.innerHTML = '';
-  tablaDenunciasBody.innerHTML = '';
-
-  const eventosOrdenados = [...state.agenda].sort((a,b) => (a.fecha || '').localeCompare(b.fecha || ''));
-
-  eventosOrdenados.forEach(ev => {
-    if (!ev.fecha || ev.fecha.length < 7) return;
-    const m = parseInt(ev.fecha.split('-')[1], 10) - 1;
-    if (m !== mes) return;
-
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${ev.fecha}</td>
-      <td>${ev.categoria}</td>
-      <td>${ev.servicio || ''}</td>
-      <td>${ev.lugar || ''}</td>
-      <td>${ev.detalle || ''}</td>
-    `;
-    tablaAgendaBody.appendChild(tr);
-
-    if (ev.categoria === 'OPERATIVO') {
-      const tro = document.createElement('tr');
-      tro.innerHTML = `
-        <td>${ev.fecha}</td>
-        <td>${ev.servicio || ''}</td>
-        <td>${ev.lugar || ''}</td>
-        <td>${ev.detalle || ''}</td>
-      `;
-      tablaOperativosBody.appendChild(tro);
-    }
-
-    if (ev.categoria === 'DENUNCIA') {
-      const trd = document.createElement('tr');
-      trd.innerHTML = `
-        <td>${ev.fecha}</td>
-        <td>${ev.servicio || ''}</td>
-        <td>${ev.lugar || ''}</td>
-        <td>${ev.detalle || ''}</td>
-      `;
-      tablaDenunciasBody.appendChild(trd);
-    }
-  });
-}
-
-// ====== Buscador de placas / licencias / DPI ======
-let placasData = [];
-const estadoEl = document.getElementById('estado');
-const busquedaInput = document.getElementById('busquedaInput');
-const btnBuscar = document.getElementById('btnBuscar');
-const resultadoEl = document.getElementById('resultado');
-
-function normalizarTexto(t) {
-  if (!t) return '';
-  return String(t).toUpperCase().replace(/\s+/g, '').replace(/-/g, '');
-}
-
-fetch('fetch("fetch("2026/TRANSPORTES2026_APP/placas.json?v=" + Date.now())
-())
-')
-  .then(r => r.json())
-  .then(data => {
-    placasData = Array.isArray(data) ? data : [];
-    estadoEl.textContent = 'Archivo de placas cargado (' + placasData.length + ' registros).';
-  })
-  .catch(err => {
-    console.error('Error cargando placas.json', err);
-    estadoEl.textContent = 'No se pudo cargar placas.json. Verifica que esté en la misma carpeta.';
-  });
-
-btnBuscar.addEventListener('click', hacerBusqueda);
-busquedaInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    hacerBusqueda();
-  }
-});
-
-function hacerBusqueda() {
-  const q = normalizarTexto(busquedaInput.value);
-  resultadoEl.innerHTML = '';
-  if (!q) {
-    resultadoEl.innerHTML = '<p class="nota">Ingresa un dato para buscar.</p>';
-    return;
-  }
-
-  if (!placasData.length) {
-    resultadoEl.innerHTML = '<p class="nota">No hay datos de placas cargados.</p>';
-    return;
-  }
-
-  const encontrados = placasData.filter(reg => {
-    return Object.values(reg).some(v => normalizarTexto(v).includes(q));
-  });
-
-  if (!encontrados.length) {
-    resultadoEl.innerHTML = '<p class="nota">No se encontraron resultados.</p>';
-    return;
-  }
-
-  encontrados.forEach((reg, idx) => {
-    const div = document.createElement('div');
-    div.className = 'result-item';
-
-    const keys = Object.keys(reg);
-    const posiblePlacaKey = keys.find(k => k.toUpperCase().includes('PLACA'));
-    const posibleLicKey = keys.find(k => k.toUpperCase().includes('LICEN'));
-    const posibleNombreKey = keys.find(k => k.toUpperCase().includes('NOMBRE') || k.toUpperCase().includes('PROPIE'));
-
-    const placa = posiblePlacaKey ? reg[posiblePlacaKey] : '';
-    const licencia = posibleLicKey ? reg[posibleLicKey] : '';
-    const nombre = posibleNombreKey ? reg[posibleNombreKey] : '';
-
-    const tituloParts = [];
-    if (placa) tituloParts.push('PLACA: ' + placa);
-    if (licencia) tituloParts.push('LICENCIA: ' + licencia);
-    if (nombre) tituloParts.push('PROPIETARIO: ' + nombre);
-
-    const tituloText = tituloParts.join(' | ') || 'Registro #' + (idx + 1);
-
-    const detalleHtml = Object.entries(reg).map(([k,v]) => {
-      return `<div><b>${k}:</b> ${v}</div>`;
-    }).join('');
-
-    div.innerHTML = `
-      <div class="result-item-titulo">${tituloText}</div>
-      <div class="result-item-detalle">${detalleHtml}</div>
-    `;
-
-    resultadoEl.appendChild(div);
-  });
-}
-
-// ====== Respaldos ======
-const btnDescargarRespaldo = document.getElementById('btnDescargarRespaldo');
-
-btnDescargarRespaldo.addEventListener('click', () => {
-  const payload = {
-    version: '1.0',
-    generado: new Date().toISOString(),
-    agenda: state.agenda
   };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  const hoy = new Date();
-  const yyyy = hoy.getFullYear();
-  const mm = String(hoy.getMonth()+1).padStart(2,'0');
-  const dd = String(hoy.getDate()).padStart(2,'0');
-  a.href = url;
-  a.download = `respaldo_transportes2026_${yyyy}${mm}${dd}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-});
 
-// ====== Pie con fecha actual ======
-const pieFecha = document.getElementById('pie-fecha');
-if (pieFecha) {
-  const hoy = new Date();
-  const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
-  pieFecha.textContent = 'Fecha actual: ' + hoy.toLocaleDateString('es-GT', opciones);
+  agenda.push(nuevo);
+  guardarAgenda();
+  renderAgenda();
+
+  // Limpiar solo detalle y lugar, conservar filtros
+  lugarInput.value   = '';
+  detalleInput.value = '';
 }
+
+// Exportar a Excel
+function exportarExcel() {
+  if (!agenda.length) {
+    alert('No hay actividades en la agenda para exportar.');
+    return;
+  }
+
+  const data = agenda
+    .slice()
+    .sort((a,b) => (a.fecha || '').localeCompare(b.fecha || ''))
+    .map(reg => ({
+      'Fecha': reg.fechaDisplay,
+      'Categoría': reg.categoria,
+      'Servicio': reg.servicio,
+      'Lugar / ruta': reg.lugar,
+      'Detalle': reg.detalle
+    }));
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet(data);
+  XLSX.utils.book_append_sheet(wb, ws, 'Agenda 2026');
+
+  XLSX.writeFile(wb, 'AGENDA_TRANSPORTES_2026.xlsx');
+}
+
+// Borrar todo
+function borrarTodo() {
+  if (!agenda.length) {
+    alert('No hay registros que borrar.');
+    return;
+  }
+  if (!confirm('¿Borrar TODA la agenda 2026 de este dispositivo?')) return;
+
+  agenda = [];
+  guardarAgenda();
+  renderAgenda();
+}
+
+// Eventos
+btnAgregar && btnAgregar.addEventListener('click', agregarRegistro);
+btnExcel   && btnExcel.addEventListener('click', exportarExcel);
+btnBorrarTodo && btnBorrarTodo.addEventListener('click', borrarTodo);
+verMesSel  && verMesSel.addEventListener('change', renderAgenda);
 
 // Inicializar
-cargarEstado();
-renderAgenda();
+(function init() {
+  cargarAgenda();
+
+  // Mes actual por defecto
+  const hoy = new Date();
+  const mesActual = hoy.getFullYear() === 2026 ? hoy.getMonth()+1 : 1;
+  if (verMesSel) verMesSel.value = String(mesActual);
+
+  renderAgenda();
+})();
