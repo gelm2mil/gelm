@@ -8,17 +8,20 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="styles.css">
 
-  <!-- Librería para generar Excel -->
+  <!-- Librería Excel -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-  <!-- Lógica de la agenda -->
+  <!-- App lógica -->
   <script defer src="app.js"></script>
 </head>
+
 <body>
+
   <div class="contenedor">
 
-    <!-- ENCABEZADO SUPERIOR -->
+    <!-- === ENCABEZADO === -->
     <div class="header-top">
+
       <div class="logo-box">
         <img src="gelm.png" alt="Logo GELM">
       </div>
@@ -35,35 +38,37 @@
       </div>
     </div>
 
-    <!-- BARRA DE NAVEGACIÓN -->
+    <!-- === NAVEGACIÓN === -->
     <nav class="nav-main">
-      <button class="nav-btn nav-btn-active" type="button">Agenda 2026</button>
-      <button class="nav-btn" type="button" disabled>Operativos</button>
-      <button class="nav-btn" type="button" disabled>Denuncias</button>
-      <button class="nav-btn" type="button"
-              onclick="window.location.href='https://gelm2mil.github.io/gelm/'">
+      <button class="nav-btn nav-btn-active">Agenda 2026</button>
+      <button class="nav-btn" disabled>Operativos</button>
+      <button class="nav-btn" disabled>Denuncias</button>
+
+      <button class="nav-btn"
+        onclick="window.location.href='https://gelm2mil.github.io/gelm/'">
         Buscar
       </button>
-      <button class="nav-btn" type="button" disabled>Respaldos</button>
+
+      <button class="nav-btn" disabled>Respaldos</button>
     </nav>
 
-    <!-- ESTADO / MENSAJE -->
+    <!-- === ESTADO === -->
     <div id="estado" class="estado-agenda">
       Agenda lista. Agrega tus actividades para 2026.
     </div>
 
-    <!-- FORMULARIO DE AGENDA -->
+    <!-- === FORMULARIO === -->
     <section class="bloque-agenda">
+
       <h2 class="titulo-seccion">Agenda mensual 2026</h2>
 
       <div class="agenda-form">
-        <!-- FECHA -->
+
         <div class="campo">
           <label for="fecha">Fecha</label>
           <input id="fecha" type="date" class="campo-input">
         </div>
 
-        <!-- CATEGORÍA -->
         <div class="campo">
           <label for="categoria">Categoría</label>
           <select id="categoria" class="campo-input">
@@ -75,7 +80,6 @@
           </select>
         </div>
 
-        <!-- SERVICIO -->
         <div class="campo">
           <label for="servicio">Servicio</label>
           <select id="servicio" class="campo-input">
@@ -91,30 +95,28 @@
           </select>
         </div>
 
-        <!-- LUGAR / RUTA -->
         <div class="campo">
           <label for="lugar">Lugar / ruta</label>
           <input id="lugar" type="text" class="campo-input"
-                 placeholder="Casco urbano, Interamericana, colonias, etc.">
+           placeholder="Casco urbano, Interamericana, colonias, etc.">
         </div>
 
-        <!-- DETALLE -->
         <div class="campo campo-detalle">
           <label for="detalle">Detalle de la actividad</label>
           <textarea id="detalle" class="campo-input campo-textarea"
-                    placeholder="Objetivo del operativo, revisión, seguimiento, etc."></textarea>
+            placeholder="Objetivo del operativo, revisión, seguimiento, etc."></textarea>
         </div>
+
       </div>
 
-      <!-- BOTÓN AGREGAR -->
+      <!-- Botón agregar -->
       <div class="acciones-superiores">
-        <button id="btnAgregar" type="button" class="btn-accion">
-          Agregar a la agenda
-        </button>
+        <button id="btnAgregar" class="btn-accion">Agregar a la agenda</button>
       </div>
 
-      <!-- FILTRO DE MES + EXPORTAR -->
+      <!-- Mes + Excel -->
       <div class="barra-mes">
+
         <div class="grupo-mes">
           <label for="verMes">Ver mes</label>
           <select id="verMes" class="campo-input campo-mes">
@@ -135,16 +137,17 @@
         </div>
 
         <div class="grupo-exportar">
-          <button id="btnExcel" type="button" class="btn-accion btn-secundario">
+          <button id="btnExcel" class="btn-accion btn-secundario">
             Descargar agenda en Excel
           </button>
-          <button id="btnBorrarTodo" type="button" class="btn-accion btn-peligro">
+
+          <button id="btnBorrarTodo" class="btn-accion btn-peligro">
             Borrar todo (año 2026)
           </button>
         </div>
       </div>
 
-      <!-- TABLA DE AGENDA -->
+      <!-- Tabla -->
       <div id="resultado" class="resultado-agenda">
         <table id="tablaAgenda">
           <thead>
@@ -156,34 +159,30 @@
               <th>Detalle</th>
             </tr>
           </thead>
-          <tbody>
-            <!-- Filas generadas por app.js -->
-          </tbody>
+          <tbody></tbody>
         </table>
       </div>
-    </section>
 
+    </section>
   </div>
 
-  <!-- PIE -->
+  <!-- === PIE DE PÁGINA === -->
   <footer class="pie">
     <div id="pie-linea1">2026 | BY GELM | Unidad de Transportes PMT - Chimaltenango</div>
     <div id="pie-linea2">att: ---[GELM]---</div>
     <div id="pie-fecha"></div>
   </footer>
 
-  <!-- (Opcional) registrar service worker si lo tienes en el repo -->
-  <script>
-    const pieFecha = document.getElementById('pie-fecha');
-    if (pieFecha) {
-      const f = new Date();
-      const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
-      pieFecha.textContent = 'Fecha actual: ' + f.toLocaleDateString('es-GT', opciones);
-    }
+<script>
+  const pieFecha = document.getElementById('pie-fecha');
+  const f = new Date();
+  pieFecha.textContent = 'Fecha actual: ' + f.toLocaleDateString('es-GT',
+    { day: 'numeric', month: 'long', year: 'numeric' });
 
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js').catch(()=>{});
-    }
-  </script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+  }
+</script>
+
 </body>
 </html>
