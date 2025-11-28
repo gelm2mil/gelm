@@ -8,20 +8,19 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="styles.css">
 
-  <!-- Librería Excel -->
+  <!-- Librería para generar Excel -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-  <!-- App lógica -->
+  <!-- Lógica de la agenda -->
   <script defer src="app.js"></script>
 </head>
-
 <body>
 
+  <!-- TODO tu contenido dentro del body -->
   <div class="contenedor">
 
-    <!-- === ENCABEZADO === -->
+    <!-- ENCABEZADO SUPERIOR -->
     <div class="header-top">
-
       <div class="logo-box">
         <img src="gelm.png" alt="Logo GELM">
       </div>
@@ -38,28 +37,25 @@
       </div>
     </div>
 
-    <!-- === NAVEGACIÓN === -->
+    <!-- BARRA DE NAVEGACIÓN -->
     <nav class="nav-main">
-      <button class="nav-btn nav-btn-active">Agenda 2026</button>
-      <button class="nav-btn" disabled>Operativos</button>
-      <button class="nav-btn" disabled>Denuncias</button>
-
-      <button class="nav-btn"
-        onclick="window.location.href='https://gelm2mil.github.io/gelm/'">
+      <button class="nav-btn nav-btn-active" type="button">Agenda 2026</button>
+      <button class="nav-btn" type="button" disabled>Operativos</button>
+      <button class="nav-btn" type="button" disabled>Denuncias</button>
+      <button class="nav-btn" type="button"
+              onclick="window.location.href='https://gelm2mil.github.io/gelm/'">
         Buscar
       </button>
-
-      <button class="nav-btn" disabled>Respaldos</button>
+      <button class="nav-btn" type="button" disabled>Respaldos</button>
     </nav>
 
-    <!-- === ESTADO === -->
+    <!-- ESTADO -->
     <div id="estado" class="estado-agenda">
       Agenda lista. Agrega tus actividades para 2026.
     </div>
 
-    <!-- === FORMULARIO === -->
+    <!-- FORMULARIO -->
     <section class="bloque-agenda">
-
       <h2 class="titulo-seccion">Agenda mensual 2026</h2>
 
       <div class="agenda-form">
@@ -98,56 +94,51 @@
         <div class="campo">
           <label for="lugar">Lugar / ruta</label>
           <input id="lugar" type="text" class="campo-input"
-           placeholder="Casco urbano, Interamericana, colonias, etc.">
+                 placeholder="Casco urbano, Interamericana, colonias, etc.">
         </div>
 
         <div class="campo campo-detalle">
           <label for="detalle">Detalle de la actividad</label>
           <textarea id="detalle" class="campo-input campo-textarea"
-            placeholder="Objetivo del operativo, revisión, seguimiento, etc."></textarea>
+                    placeholder="Objetivo del operativo, revisión, seguimiento, etc."></textarea>
         </div>
 
       </div>
 
-      <!-- Botón agregar -->
       <div class="acciones-superiores">
-        <button id="btnAgregar" class="btn-accion">Agregar a la agenda</button>
+        <button id="btnAgregar" type="button" class="btn-accion">
+          Agregar a la agenda
+        </button>
       </div>
 
-      <!-- Mes + Excel -->
       <div class="barra-mes">
-
-        <div class="grupo-mes">
-          <label for="verMes">Ver mes</label>
-          <select id="verMes" class="campo-input campo-mes">
-            <option value="0">Todos</option>
-            <option value="1">Enero</option>
-            <option value="2">Febrero</option>
-            <option value="3">Marzo</option>
-            <option value="4">Abril</option>
-            <option value="5">Mayo</option>
-            <option value="6">Junio</option>
-            <option value="7">Julio</option>
-            <option value="8">Agosto</option>
-            <option value="9">Septiembre</option>
-            <option value="10">Octubre</option>
-            <option value="11">Noviembre</option>
-            <option value="12">Diciembre</option>
-          </select>
-        </div>
+        <label for="verMes">Ver mes</label>
+        <select id="verMes" class="campo-input campo-mes">
+          <option value="0">Todos</option>
+          <option value="1">Enero</option>
+          <option value="2">Febrero</option>
+          <option value="3">Marzo</option>
+          <option value="4">Abril</option>
+          <option value="5">Mayo</option>
+          <option value="6">Junio</option>
+          <option value="7">Julio</option>
+          <option value="8">Agosto</option>
+          <option value="9">Septiembre</option>
+          <option value="10">Octubre</option>
+          <option value="11">Noviembre</option>
+          <option value="12">Diciembre</option>
+        </select>
 
         <div class="grupo-exportar">
-          <button id="btnExcel" class="btn-accion btn-secundario">
+          <button id="btnExcel" type="button" class="btn-accion btn-secundario">
             Descargar agenda en Excel
           </button>
-
-          <button id="btnBorrarTodo" class="btn-accion btn-peligro">
+          <button id="btnBorrarTodo" type="button" class="btn-accion btn-peligro">
             Borrar todo (año 2026)
           </button>
         </div>
       </div>
 
-      <!-- Tabla -->
       <div id="resultado" class="resultado-agenda">
         <table id="tablaAgenda">
           <thead>
@@ -162,27 +153,25 @@
           <tbody></tbody>
         </table>
       </div>
-
     </section>
-  </div>
 
-  <!-- === PIE DE PÁGINA === -->
+  </div> <!-- cierre contenedor -->
+
+  <!-- PIE -->
   <footer class="pie">
     <div id="pie-linea1">2026 | BY GELM | Unidad de Transportes PMT - Chimaltenango</div>
     <div id="pie-linea2">att: ---[GELM]---</div>
     <div id="pie-fecha"></div>
   </footer>
 
-<script>
-  const pieFecha = document.getElementById('pie-fecha');
-  const f = new Date();
-  pieFecha.textContent = 'Fecha actual: ' + f.toLocaleDateString('es-GT',
-    { day: 'numeric', month: 'long', year: 'numeric' });
-
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js').catch(()=>{});
-  }
-</script>
+  <script>
+    const pieFecha = document.getElementById('pie-fecha');
+    if (pieFecha) {
+      const f = new Date();
+      pieFecha.textContent = 'Fecha actual: ' + 
+        f.toLocaleDateString('es-GT', { day: '2-digit', month: 'long', year: 'numeric' });
+    }
+  </script>
 
 </body>
 </html>
