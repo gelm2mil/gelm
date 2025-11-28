@@ -1,189 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agenda 2026 — GELM</title>
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Librería para Excel -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
   <script defer src="app.js"></script>
-
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at 30% 10%, #00eaff33, #000012 60%, #450045 120%);
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      color: #fff;
-    }
-
-    .contenedor {
-      width: 95%;
-      max-width: 1100px;
-      margin: auto;
-      padding-top: 20px;
-    }
-
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px;
-      background: rgba(0, 0, 0, 0.45);
-      box-shadow: 0 0 25px #00ffc8;
-      border-radius: 20px;
-      margin-bottom: 25px;
-    }
-
-    .logo {
-      width: 95px;
-      filter: drop-shadow(0 0 10px #00ffc8);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 32px;
-      color: #00ffc8;
-      text-shadow: 0 0 15px #00ffc8;
-    }
-
-    .titulos p {
-      margin: 4px 0 0 0;
-      font-size: 14px;
-      color: #baffff;
-    }
-
-    .btn-volver {
-      background: #00ffc8;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-bottom: 20px;
-      color: black;
-      font-weight: bold;
-      box-shadow: 0 0 12px #00ffc8;
-    }
-
-    .subtitulo {
-      font-size: 24px;
-      margin-bottom: 12px;
-      color: #00ffc8;
-      text-shadow: 0 0 12px #00ffc8;
-    }
-
-    .formulario, .filtros {
-      background: rgba(0, 0, 0, 0.45);
-      padding: 20px;
-      border-radius: 18px;
-      box-shadow: 0 0 25px #0099ff;
-      margin-bottom: 25px;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      margin-bottom: 15px;
-      padding: 12px;
-      border-radius: 12px;
-      border: 2px solid #00ffc8;
-      background: #000000aa;
-      color: #00ffc8;
-      font-size: 16px;
-      outline: none;
-      box-shadow: 0 0 12px #00ffc8;
-    }
-
-    textarea {
-      height: 120px;
-      resize: none;
-    }
-
-    .btn-accion {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(90deg, #0099ff, #8c00ff);
-      border: none;
-      color: #fff;
-      font-size: 18px;
-      border-radius: 15px;
-      cursor: pointer;
-      box-shadow: 0 0 18px #8c00ff;
-    }
-
-    .btn-excel {
-      background: #00ffc8;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      color: #003333;
-      font-weight: bold;
-      box-shadow: 0 0 12px #00ffc8;
-      margin-right: 10px;
-    }
-
-    .btn-peligro {
-      background: #ff0033;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      color: #fff;
-      font-weight: bold;
-      box-shadow: 0 0 12px #ff0033;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: rgba(0, 0, 0, 0.55);
-      box-shadow: 0 0 22px #00ffc8;
-      border-radius: 20px;
-      overflow: hidden;
-    }
-
-    th {
-      background: #00ffc8;
-      padding: 12px;
-      color: #000;
-      font-weight: bold;
-    }
-
-    td {
-      padding: 10px;
-      border-bottom: 1px solid #0099ff;
-    }
-
-    footer {
-      margin-top: 30px;
-      text-align: center;
-      font-size: 14px;
-      color: #00ffc8;
-      text-shadow: 0 0 10px #00ffc8;
-    }
-  </style>
 </head>
-
 <body>
 
 <div class="contenedor">
 
+  <!-- ENCABEZADO -->
   <div class="header-top">
-    <img src="icons/icon-192.png" class="logo">
+    <img src="../assets/gelm.png" class="logo" alt="GELM">
     <div class="titulos">
       <h1>AGENDA 2026 — PMT CHIMALTENANGO</h1>
       <p>Sistema profesional de programación mensual</p>
     </div>
-    <img src="icons/icon-192.png" class="logo">
+    <img src="../assets/gelm.png" class="logo" alt="GELM">
   </div>
 
-  <button class="btn-volver" onclick="location.href='index.html'">⬅ Volver al menú</button>
+  <!-- BOTÓN VOLVER -->
+  <button class="btn-volver" onclick="location.href='../index.html'">
+    ⬅ Volver al menú
+  </button>
 
   <h2 class="subtitulo">Agregar actividad</h2>
 
+  <!-- FORMULARIO -->
   <div class="formulario">
 
     <label>Fecha</label>
@@ -194,7 +44,7 @@
       <option value="Operativo">Operativo</option>
       <option value="Administrativo">Administrativo</option>
       <option value="Denuncia">Denuncia</option>
-      <option value="Seguimiento a denuncia">Seguimiento</option>
+      <option value="Seguimiento a denuncia">Seguimiento a denuncia</option>
       <option value="Otros">Otros</option>
     </select>
 
@@ -221,6 +71,7 @@
 
   </div>
 
+  <!-- FILTRO -->
   <div class="filtros">
     <label>Ver mes:</label>
     <select id="verMes">
@@ -243,6 +94,7 @@
     <button id="btnBorrar" class="btn-peligro">Borrar todo</button>
   </div>
 
+  <!-- TABLA -->
   <table class="tabla">
     <thead>
       <tr>
@@ -258,8 +110,8 @@
 
 </div>
 
-<footer>
-  © 2026 — GELM | Unidad de Transportes PMT  
+<footer class="pie">
+  © 2026 — GELM | Unidad de Transportes PMT
   <br>
   <span id="fechaActual"></span>
 </footer>
@@ -267,9 +119,7 @@
 <script>
   document.getElementById("fechaActual").textContent =
     new Date().toLocaleDateString("es-GT", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
+      day:"2-digit", month:"long", year:"numeric"
     });
 </script>
 
