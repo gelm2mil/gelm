@@ -1,31 +1,43 @@
-const CACHE_NAME = 'transportes2026-v1';
-const ASSETS = [
-  './',
-  './index.html',
-  './styles.css',
-  './app.js',
-  './manifest.webmanifest',
-  './placas.json'
+const CACHE_NAME = "agenda2026-v1";
+
+const FILES_TO_CACHE = [
+  "./",
+  "agen2026.html",
+  "styles.css",
+  "app.js",
+  "manifest.webmanifest",
+  "gelm.png",
+  "icons/icon-192.png",
+  "icons/icon-512.png"
 ];
 
-self.addEventListener('install', event => {
+// INSTALAR
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(FILES_TO_CACHE);
+    })
   );
+  self.skipWaiting();
 });
 
-self.addEventListener('activate', event => {
+// ACTIVAR
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.map(k => (k !== CACHE_NAME ? caches.delete(k) : null))
-      )
+    caches.keys().then((keys) =>
+      Promise.all(keys.map((key) => {
+        if (key !== CACHE_NAME) return caches.delete(key);
+      }))
     )
   );
+  self.clients.claim();
 });
 
-self.addEventListener('fetch', event => {
+// FETCH (offline)
+self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then(resp => resp || fetch(event.request))
+    caches.match(event.request).then((cached) => {
+      return cached || fetch(event.request);
+    })
   );
 });
