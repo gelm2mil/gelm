@@ -1,359 +1,104 @@
-/* ================== FONDO GENERAL ================== */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
 body {
   margin: 0;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  color: #eee;
-  background:
-    radial-gradient(circle at 20% 0%, rgba(0,255,255,0.2), transparent 50%),
-    radial-gradient(circle at 80% 0%, rgba(255,0,255,0.18), transparent 55%),
-    #05010a;
+  padding: 0;
+  background: radial-gradient(circle at 20% 0%, rgba(0,255,255,0.15), transparent 40%),
+              radial-gradient(circle at 80% 0%, rgba(255,0,255,0.15), transparent 40%),
+              #05010a;
   background-attachment: fixed;
-  animation: fondoGlow 6s ease-in-out infinite alternate;
+  font-family: 'Orbitron', Arial;
+  color: #bff;
+  animation: glow 8s infinite alternate;
 }
 
-@keyframes fondoGlow {
-  0%   { box-shadow: inset 0 0 20px #ff00ff; }
-  50%  { box-shadow: inset 0 0 80px #00ffff; }
-  100% { box-shadow: inset 0 0 120px #ff00ff; }
+@keyframes glow {
+  0% { box-shadow: inset 0 0 10px #00fff2; }
+  100% { box-shadow: inset 0 0 80px #ff00e6; }
 }
 
-/* CONTENEDOR PRINCIPAL */
-.contenedor {
-  max-width: 1200px;
-  margin: 0 auto;
-  background: rgba(0, 0, 0, 0.82);
-  border-radius: 18px;
+.container {
+  max-width: 1100px;
+  margin: auto;
   padding: 20px;
-  box-shadow:
-    0 0 18px rgba(0,255,255,0.5),
-    0 0 50px rgba(0,0,0,1);
-  border: 1px solid rgba(0,255,255,0.35);
-}
-
-/* ================== ENCABEZADO SUPERIOR ================== */
-
-.header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 15px;
-}
-
-/* Caja de logos */
-.logo-box {
-  flex: 0 0 auto;
-  padding: 6px;
-  border-radius: 14px;
-  background: radial-gradient(circle at 30% 0,
-              rgba(0,255,120,0.3),
-              rgba(0,255,255,0.05));
-  box-shadow:
-      0 0 10px rgba(0,255,120,0.9),
-      0 0 25px rgba(0,0,0,0.9);
-  border: 1px solid rgba(0,255,180,0.9);
-}
-
-/* 🔥 AQUÍ forzamos que los logos SEAN PEQUEÑOS */
-.logo-box img {
-  display: block;
-  max-width: 110px;   /* tamaño controlado */
-  height: auto;
-}
-
-/* Textos del encabezado */
-.titulos {
-  flex: 1 1 auto;
   text-align: center;
 }
 
-.titulos-linea1 {
-  font-size: 20px;
-  font-weight: bold;
-  color: #00ffc8;
-  text-shadow: 0 0 10px #00ffff, 0 0 25px #0044ff;
-  letter-spacing: 1px;
+.logo {
+  width: 110px;
+  filter: drop-shadow(0 0 12px #00ffcc);
 }
 
-.titulos-linea2 {
-  font-size: 15px;
-  margin-top: 4px;
-  color: #ffdf5e;
-  text-shadow: 0 0 6px #000;
+.titulo {
+  font-size: 32px;
+  margin: 10px 0;
+  color: #00f7ff;
+  text-shadow: 0 0 12px #00eaff;
 }
 
-.titulos-linea3 {
-  font-size: 14px;
-  margin-top: 3px;
-  color: #a5ffe5;
-  text-shadow: 0 0 6px #00ffea;
-}
-
-.titulos-linea4 {
-  font-size: 13px;
-  margin-top: 4px;
-  color: #cccccc;
-}
-
-/* ================== NAVEGACIÓN SUPERIOR ================== */
-
-.nav-main {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin: 10px 0 18px 0;
-}
-
-.nav-btn {
-  border: none;
-  border-radius: 999px;
-  padding: 8px 26px;
-  font-size: 14px;
-  cursor: pointer;
-  color: #000;
-  font-weight: bold;
-  background: radial-gradient(circle at 20% 0, #00ffff, #5f00ff);
-  box-shadow:
-    0 0 10px rgba(0,255,255,0.8),
-    0 0 26px rgba(0,0,0,0.9);
-  text-shadow: 0 0 4px #00ffea;
-  opacity: 0.85;
-}
-
-.nav-btn:hover {
-  opacity: 1;
-}
-
-.nav-btn:disabled {
-  cursor: default;
-  opacity: 0.5;
-}
-
-.nav-btn-active {
-  opacity: 1;
-  box-shadow:
-    0 0 14px rgba(0,255,255,1),
-    0 0 30px rgba(0,0,0,1);
-}
-
-/* ================== ESTADO ================== */
-
-.estado-agenda {
-  text-align: left;
-  font-size: 13px;
-  color: #a8ffe8;
-  margin-bottom: 10px;
-}
-
-/* ================== BLOQUE AGENDA ================== */
-
-.bloque-agenda {
-  margin-top: 10px;
-}
-
-.titulo-seccion {
+.sub {
   font-size: 18px;
-  color: #00ffc8;
-  text-shadow: 0 0 8px #00ffff;
-  margin-bottom: 10px;
+  color: #7ff;
+  margin-top: 5px;
 }
 
-/* Formulario en filas */
-.agenda-form {
+.by {
+  color: #88ffe5;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.grid-menu {
+  margin-top: 40px;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px 14px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 22px;
+}
+
+.card {
+  background: rgba(0,0,0,0.7);
+  border: 1px solid #00ffdd;
+  padding: 26px 20px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 18px rgba(0,255,255,0.3);
+}
+
+.card:hover {
+  box-shadow: 0 0 30px #00eaff;
+  transform: translateY(-5px);
+  background: rgba(0, 20, 30, 0.7);
+}
+
+.card.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: #555;
+}
+
+.card .icon {
+  font-size: 42px;
+  display: block;
   margin-bottom: 12px;
 }
 
-/* Campo genérico */
-.campo {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 13px;
-}
-
-.campo label {
-  color: #a5ffe5;
-}
-
-/* Inputs, selects, textarea */
-.campo-input {
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid #00ffc8;
-  background: #050513;
-  color: #00ffc8;
-  font-size: 14px;
-  outline: none;
-  box-shadow: 0 0 10px rgba(0,255,255,0.5);
-}
-
-.campo-input::placeholder {
-  color: #66ffe6;
-}
-
-.campo-textarea {
-  border-radius: 12px;
-  min-height: 70px;
-  resize: vertical;
-}
-
-/* Detalle ocupa todo el ancho */
-.campo-detalle {
-  grid-column: 1 / -1;
-}
-
-/* ================== BOTÓN AGREGAR ================== */
-
-.acciones-superiores {
-  margin: 8px 0 14px 0;
-}
-
-.btn-accion {
-  border: none;
-  border-radius: 999px;
-  padding: 10px 24px;
-  font-size: 14px;
-  cursor: pointer;
-  font-weight: bold;
-  color: #000;
-  background: radial-gradient(circle at 30% 0, #00ffff, #5f00ff);
-  text-shadow: 0 0 4px #00ffea;
-  box-shadow:
-    0 0 10px rgba(0,255,255,0.8),
-    0 0 26px rgba(0,0,0,0.9);
-}
-
-.btn-accion:hover {
-  filter: brightness(1.07);
-}
-
-.btn-secundario {
-  background: radial-gradient(circle at 30% 0, #00ffc8, #0080ff);
-}
-
-.btn-peligro {
-  background: radial-gradient(circle at 30% 0, #ff5555, #aa0000);
-  color: #fff;
-}
-
-/* ================== BARRA DE MES / EXPORTAR ================== */
-
-.barra-mes {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 10px;
+.label {
+  display: block;
+  font-size: 18px;
   margin-top: 4px;
+  color: #afffff;
+  text-shadow: 0 0 6px #00ffff;
 }
 
-.barra-mes label {
-  font-size: 13px;
-  color: #a5ffe5;
+.mini {
+  font-size: 12px;
+  margin-top: 4px;
+  color: #ccc;
 }
-
-.campo-mes {
-  max-width: 180px;
-}
-
-.grupo-exportar {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-/* ================== TABLA RESULTADO ================== */
-
-.resultado-agenda {
-  max-width: 100%;
-  overflow-x: auto;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 6px;
-  background: #141414;
-}
-
-th, td {
-  border: 1px solid #333;
-  padding: 6px 8px;
-  font-size: 13px;
-  text-align: left;
-}
-
-th {
-  background: #00ffc8;
-  color: #000;
-}
-
-tr:nth-child(even) td {
-  background: #101010;
-}
-
-/* ================== PIE ================== */
 
 .pie {
-  margin-top: 18px;
-  text-align: center;
-  font-size: 12px;
-  color: #66ffe6;
-}
-
-#pie-linea2 {
-  color: #00ff66;
-}
-
-#pie-fecha {
-  color: #22c5ff;
-  margin-top: 4px;
-}
-
-/* ================== RESPONSIVE ================== */
-
-@media (max-width: 900px) {
-  .agenda-form {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 600px) {
-  .contenedor {
-    padding: 14px;
-  }
-
-  .header-top {
-    flex-direction: column;
-  }
-
-  .logo-box img {
-    max-width: 95px;
-  }
-
-  .agenda-form {
-    grid-template-columns: 1fr;
-  }
-
-  .barra-mes {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .grupo-exportar {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .btn-accion {
-    width: auto;
-  }
-
-  .campo-mes {
-    max-width: 100%;
-  }
+  margin-top: 50px;
+  font-size: 13px;
+  color: #70ffff;
 }
