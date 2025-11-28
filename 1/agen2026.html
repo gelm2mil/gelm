@@ -1,184 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TRANSPORTES 2026 — PMT CHIMALTENANGO</title>
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#00ffc8">
-
-  <!-- Estilos -->
-  <link rel="stylesheet" href="styles.css">
-
-  <!-- Librería para generar Excel -->
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-  <!-- Lógica de la agenda -->
-  <script defer src="app.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GELM — Sistema PMT 2026</title>
+<link rel="stylesheet" href="menu.css">
 </head>
+
 <body>
 
-  <!-- TODO tu contenido dentro del body -->
-  <div class="contenedor">
+<div class="container">
 
-    <!-- ENCABEZADO SUPERIOR -->
-    <div class="header-top">
-      <div class="logo-box">
-        <img src="gelm.png" alt="Logo GELM">
-      </div>
+  <header class="top-header">
+      <img src="icons/gelm.png" class="logo">
+      <h1 class="titulo">SISTEMA PMT 2026</h1>
+      <h2 class="sub">Unidad de Transportes — PMT Chimaltenango</h2>
+      <h3 class="by">== BY GELM ==</h3>
+  </header>
 
-      <div class="titulos">
-        <div class="titulos-linea1">TRANSPORTES 2026 — PMT CHIMALTENANGO</div>
-        <div class="titulos-linea2">Unidad de Transportes — Subcomisario / Jefe de Transportes</div>
-        <div class="titulos-linea3">Sistema de agenda, operativos, denuncias y control de servicios</div>
-        <div class="titulos-linea4">== BY GELM ==</div>
-      </div>
+  <div class="grid-menu">
 
-      <div class="logo-box">
-        <img src="gelm.png" alt="Logo GELM">
-      </div>
+    <!-- AGENDA -->
+    <div class="card" onclick="location.href='agen2026.html'">
+      <span class="icon">📘</span>
+      <span class="label">Agenda 2026</span>
     </div>
 
-    <!-- BARRA DE NAVEGACIÓN -->
-    <nav class="nav-main">
-      <button class="nav-btn nav-btn-active" type="button">Agenda 2026</button>
-      <button class="nav-btn" type="button" disabled>Operativos</button>
-      <button class="nav-btn" type="button" disabled>Denuncias</button>
-      <button class="nav-btn" type="button"
-              onclick="window.location.href='https://gelm2mil.github.io/gelm/'">
-        Buscar
-      </button>
-      <button class="nav-btn" type="button" disabled>Respaldos</button>
-    </nav>
-
-    <!-- ESTADO -->
-    <div id="estado" class="estado-agenda">
-      Agenda lista. Agrega tus actividades para 2026.
+    <!-- OPERATIVOS -->
+    <div class="card disabled">
+      <span class="icon">🚨</span>
+      <span class="label">Operativos</span>
+      <span class="mini">Próximamente</span>
     </div>
 
-    <!-- FORMULARIO -->
-    <section class="bloque-agenda">
-      <h2 class="titulo-seccion">Agenda mensual 2026</h2>
+    <!-- DENUNCIAS -->
+    <div class="card disabled">
+      <span class="icon">📝</span>
+      <span class="label">Denuncias</span>
+      <span class="mini">En desarrollo</span>
+    </div>
 
-      <div class="agenda-form">
+    <!-- BUSCADOR DE PLACAS -->
+    <div class="card" onclick="location.href='https://gelm2mil.github.io/gelm/'">
+      <span class="icon">🔎</span>
+      <span class="label">Buscar placas / DPI</span>
+    </div>
 
-        <div class="campo">
-          <label for="fecha">Fecha</label>
-          <input id="fecha" type="date" class="campo-input">
-        </div>
+    <!-- RESPALDOS -->
+    <div class="card disabled">
+      <span class="icon">📦</span>
+      <span class="label">Respaldos</span>
+    </div>
 
-        <div class="campo">
-          <label for="categoria">Categoría</label>
-          <select id="categoria" class="campo-input">
-            <option value="Operativo">Operativo</option>
-            <option value="Administrativo">Administrativo</option>
-            <option value="Denuncia">Denuncia</option>
-            <option value="Seguimiento a denuncia">Seguimiento a denuncia</option>
-            <option value="Otros">Otros</option>
-          </select>
-        </div>
+    <!-- REPORTES -->
+    <div class="card disabled">
+      <span class="icon">📊</span>
+      <span class="label">Reportes</span>
+    </div>
 
-        <div class="campo">
-          <label for="servicio">Servicio</label>
-          <select id="servicio" class="campo-input">
-            <option value="(Opcional)">(Opcional)</option>
-            <option value="Urbano">Urbano</option>
-            <option value="Extraurbano">Extraurbano</option>
-            <option value="Moto taxi">Moto taxi</option>
-            <option value="Escolar">Escolar</option>
-            <option value="Fletes">Fletes</option>
-            <option value="Automóvil">Automóvil</option>
-            <option value="Motocicleta">Motocicleta</option>
-            <option value="Otros">Otros</option>
-          </select>
-        </div>
+    <!-- CONFIGURACIÓN -->
+    <div class="card disabled">
+      <span class="icon">⚙</span>
+      <span class="label">Configuración</span>
+    </div>
 
-        <div class="campo">
-          <label for="lugar">Lugar / ruta</label>
-          <input id="lugar" type="text" class="campo-input"
-                 placeholder="Casco urbano, Interamericana, colonias, etc.">
-        </div>
+  </div>
 
-        <div class="campo campo-detalle">
-          <label for="detalle">Detalle de la actividad</label>
-          <textarea id="detalle" class="campo-input campo-textarea"
-                    placeholder="Objetivo del operativo, revisión, seguimiento, etc."></textarea>
-        </div>
-
-      </div>
-
-      <div class="acciones-superiores">
-        <button id="btnAgregar" type="button" class="btn-accion">
-          Agregar a la agenda
-        </button>
-      </div>
-
-      <div class="barra-mes">
-        <label for="verMes">Ver mes</label>
-        <select id="verMes" class="campo-input campo-mes">
-          <option value="0">Todos</option>
-          <option value="1">Enero</option>
-          <option value="2">Febrero</option>
-          <option value="3">Marzo</option>
-          <option value="4">Abril</option>
-          <option value="5">Mayo</option>
-          <option value="6">Junio</option>
-          <option value="7">Julio</option>
-          <option value="8">Agosto</option>
-          <option value="9">Septiembre</option>
-          <option value="10">Octubre</option>
-          <option value="11">Noviembre</option>
-          <option value="12">Diciembre</option>
-        </select>
-
-        <div class="grupo-exportar">
-          <button id="btnExcel" type="button" class="btn-accion btn-secundario">
-            Descargar agenda en Excel
-          </button>
-          <button id="btnBorrarTodo" type="button" class="btn-accion btn-peligro">
-            Borrar todo (año 2026)
-          </button>
-        </div>
-      </div>
-
-      <div id="resultado" class="resultado-agenda">
-        <table id="tablaAgenda">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Categoría</th>
-              <th>Servicio</th>
-              <th>Lugar / ruta</th>
-              <th>Detalle</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-
-  </div> <!-- cierre contenedor -->
-
-  <!-- PIE -->
   <footer class="pie">
-    <div id="pie-linea1">2026 | BY GELM | Unidad de Transportes PMT - Chimaltenango</div>
-    <div id="pie-linea2">att: ---[GELM]---</div>
-    <div id="pie-fecha"></div>
+    <div>© 2026 — GELM</div>
+    <div>PMT — Chimaltenango</div>
   </footer>
 
-  <script>
-    const pieFecha = document.getElementById('pie-fecha');
-    if (pieFecha) {
-      const f = new Date();
-      pieFecha.textContent = 'Fecha actual: ' + 
-        f.toLocaleDateString('es-GT', { day: '2-digit', month: 'long', year: 'numeric' });
-    }
-  </script>
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-  }
-</script>
+</div>
 
 </body>
 </html>
